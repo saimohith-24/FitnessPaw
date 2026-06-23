@@ -40,35 +40,38 @@ fun AnalyticsScreen(viewModel: MainViewModel) {
     // Calculate today's completion percentage
     val totalHabitsCount = customHabits.size
     val completedHabitsCount = customHabits.count { it.completed }
-    val todayProgress = if (totalHabitsCount == 0) 1f else completedHabitsCount.toFloat() / totalHabitsCount
+    val todayProgress = if (totalHabitsCount == 0) 0f else completedHabitsCount.toFloat() / totalHabitsCount
 
     // Current Day of Week (1 = Sunday, 2 = Monday, ..., 7 = Saturday)
     val dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
 
-    // Weekly completion data mapping
-    // We mock realistic premium history values for previous days, and plug in real-time today progress!
-    val weekdays = listOf(
-        WeeklyDayData("Mon", 0.66f, dayOfWeek == Calendar.MONDAY),
-        WeeklyDayData("Tue", 1.0f, dayOfWeek == Calendar.TUESDAY),
-        WeeklyDayData("Wed", 0.33f, dayOfWeek == Calendar.WEDNESDAY),
-        WeeklyDayData("Thu", 1.0f, dayOfWeek == Calendar.THURSDAY),
-        WeeklyDayClass(dayOfWeek == Calendar.FRIDAY, todayProgress), // Friday
-        WeeklyDayData("Sat", 1.0f, dayOfWeek == Calendar.SATURDAY),
-        WeeklyDayClass(dayOfWeek == Calendar.SUNDAY, todayProgress)  // Sunday
-    )
+    val todayWeekPos = when (dayOfWeek) {
+        Calendar.MONDAY -> 0
+        Calendar.TUESDAY -> 1
+        Calendar.WEDNESDAY -> 2
+        Calendar.THURSDAY -> 3
+        Calendar.FRIDAY -> 4
+        Calendar.SATURDAY -> 5
+        Calendar.SUNDAY -> 6
+        else -> 0
+    }
 
-    // Filter list to keep a fixed sequence (Mon, Tue, Wed, Thu, Fri, Sat, Sun)
-    // We map days properly based on calendar
-    val resolvedDays = remember(todayProgress) {
-        val days = ArrayList<WeeklyDayData>()
-        days.add(WeeklyDayData("Mon", if (dayOfWeek == Calendar.MONDAY) todayProgress else 0.66f, dayOfWeek == Calendar.MONDAY))
-        days.add(WeeklyDayData("Tue", if (dayOfWeek == Calendar.TUESDAY) todayProgress else 1.0f, dayOfWeek == Calendar.TUESDAY))
-        days.add(WeeklyDayData("Wed", if (dayOfWeek == Calendar.WEDNESDAY) todayProgress else 0.33f, dayOfWeek == Calendar.WEDNESDAY))
-        days.add(WeeklyDayData("Thu", if (dayOfWeek == Calendar.THURSDAY) todayProgress else 0.66f, dayOfWeek == Calendar.THURSDAY))
-        days.add(WeeklyDayData("Fri", if (dayOfWeek == Calendar.FRIDAY) todayProgress else 1.0f, dayOfWeek == Calendar.FRIDAY))
-        days.add(WeeklyDayData("Sat", if (dayOfWeek == Calendar.SATURDAY) todayProgress else 0.33f, dayOfWeek == Calendar.SATURDAY))
-        days.add(WeeklyDayData("Sun", if (dayOfWeek == Calendar.SUNDAY) todayProgress else 0.0f, dayOfWeek == Calendar.SUNDAY))
-        days
+    val dayNames = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+
+    // Dynamically map weekly progress based on active streak and current day's progress
+    val resolvedDays = remember(todayProgress, streak) {
+        dayNames.mapIndexed { i, name ->
+            val isToday = i == todayWeekPos
+            val progress = when {
+                isToday -> todayProgress
+                i < todayWeekPos -> {
+                    val daysAgo = todayWeekPos - i
+                    if (streak > 0 && daysAgo <= streak) 1f else 0f
+                }
+                else -> 0f
+            }
+            WeeklyDayData(name, progress, isToday)
+        }
     }
 
     // Average weekly completion

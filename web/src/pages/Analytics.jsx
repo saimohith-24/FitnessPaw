@@ -23,21 +23,28 @@ export default function Analytics() {
   // Calculate today's completion percentage
   const totalHabitsCount = customHabits.length;
   const completedHabitsCount = customHabits.filter((h) => h.completed).length;
-  const todayProgress = totalHabitsCount === 0 ? 1 : completedHabitsCount / totalHabitsCount;
+  const todayProgress = totalHabitsCount === 0 ? 0.0 : completedHabitsCount / totalHabitsCount;
 
   // Weekday identifiers (Sunday is 0, Monday is 1, ..., Saturday is 6)
   const todayDayIndex = new Date().getDay();
+  const todayWeekPos = todayDayIndex === 0 ? 6 : todayDayIndex - 1;
 
-  // Mapping days (Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6, Sun=0)
-  const resolvedDays = [
-    { name: "Mon", val: todayDayIndex === 1 ? todayProgress : 0.66, isToday: todayDayIndex === 1 },
-    { name: "Tue", val: todayDayIndex === 2 ? todayProgress : 1.0, isToday: todayDayIndex === 2 },
-    { name: "Wed", val: todayDayIndex === 3 ? todayProgress : 0.33, isToday: todayDayIndex === 3 },
-    { name: "Thu", val: todayDayIndex === 4 ? todayProgress : 0.66, isToday: todayDayIndex === 4 },
-    { name: "Fri", val: todayDayIndex === 5 ? todayProgress : 1.0, isToday: todayDayIndex === 5 },
-    { name: "Sat", val: todayDayIndex === 6 ? todayProgress : 0.33, isToday: todayDayIndex === 6 },
-    { name: "Sun", val: todayDayIndex === 0 ? todayProgress : 0.0, isToday: todayDayIndex === 0 }
-  ];
+  const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  // Dynamically map weekly progress based on active streak and current day's progress
+  const resolvedDays = dayNames.map((name, i) => {
+    let val = 0.0;
+    const isToday = i === todayWeekPos;
+    if (isToday) {
+      val = todayProgress;
+    } else if (i < todayWeekPos) {
+      const daysAgo = todayWeekPos - i;
+      val = (streak > 0 && daysAgo <= streak) ? 1.0 : 0.0;
+    } else {
+      val = 0.0;
+    }
+    return { name, val, isToday };
+  });
 
   // Average weekly success calculation
   const avgCompletion = resolvedDays.reduce((acc, curr) => acc + curr.val, 0) / resolvedDays.length;
