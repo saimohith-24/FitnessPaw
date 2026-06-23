@@ -92,25 +92,32 @@ The tests in `testing/` run locally out-of-the-box and generate styled HTML repo
 
 ---
 
-## 📊 Excel QA Master Report
-I created [generate-excel-report.py](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/generate-excel-report.py) to compile all 915 QA test cases, modules, features, preconditions, steps, test data, and expected results into a native XML Spreadsheet 2003 workbook [fitnesspaw-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/fitnesspaw-test-report.xls).
-The workbook contains **five separate styled worksheets/tabs** corresponding to:
-1. **`All Test Cases`**: Complete list of all 915 test cases.
-2. **`Smoke Test Suite`**: Core checklist of the most critical 45 test cases (15 API, 15 Web, 15 Mobile).
-3. **`Sanity Test Suite`**: Subset of 105 primary verification test cases (35 API, 35 Web, 35 Mobile).
-4. **`Regression Test Suite`**: Full regression checklist containing all 915 test cases.
-5. **`End-to-End Test Suite`**: Curated list of all 605 E2E UI verification test cases (305 Web, 300 Mobile).
+## 📊 Excel QA Master Reports
+I updated [generate-excel-report.py](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/generate-excel-report.py) to compile QA test cases, modules, features, preconditions, steps, test data, and expected results into **separate individual XLS files** for each testing category, as well as a consolidated master report:
+1. **[selenium-web-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/selenium-web-report.xls)** (305 Selenium Website UI Tests)
+2. **[appium-android-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/appium-android-report.xls)** (300 Appium Mobile Android UI Tests)
+3. **[api-validation-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/api-validation-report.xls)** (310 Firebase API Validation Tests)
+4. **[unit-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/unit-test-report.xls)** (300 JUnit + Vitest Unit Tests)
+5. **[load-performance-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/load-performance-report.xls)** (100 k6 Load Performance Tests)
+6. **[security-compliance-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/security-compliance-report.xls)** (100 Security Scans & Secrets Audits)
+7. **[fitnesspaw-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/fitnesspaw-test-report.xls)** (Consolidated QA Master Report of API + Web + Mobile)
+
+Each workbook contains **five separate styled worksheets/tabs** corresponding to:
+- **`All Test Cases`**: Complete list of all test cases in that category.
+- **`Smoke Test Suite`**: Core checklist of the most critical test cases (e.g. first 15 or 10 tests).
+- **`Sanity Test Suite`**: Subset of primary verification test cases (e.g. first 35 or 20 tests).
+- **`Regression Test Suite`**: Full regression checklist containing all test cases.
+- **`End-to-End Test Suite`**: A curated list of E2E verification test cases.
 
 **Visual Styling (Matching the Screenshot):**
 - **Dark Blue Header Row**: Colored in `#1F4E78` with bold white text.
 - **AutoFilter & Freeze Panes**: Automatically enabled on the header row to allow easy sorting and filtering, and freeze the headers when scrolling.
 - **Alternating Zebra Rows**: Subtle white and light-gray (`#F9FAFB`) zebra striping for high readability.
-- **Bold Test Case IDs**: Center-aligned bold codes in Column A (e.g., `TC-API-001`).
+- **Bold Test Case IDs**: Center-aligned bold codes in Column A (e.g., `TC-WEB-001`).
 - **Pass Status Badges**: Center-aligned, bold green text (`#006100`) on a light green background (`#C6EFCE`) indicating `PASSED`.
 
 - *Verification Command:*
   ```bash
   python3 testing/reports/generate-excel-report.py
   ```
-- *Output Spreadsheet:* [fitnesspaw-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/fitnesspaw-test-report.xls)
 
