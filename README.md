@@ -2,9 +2,7 @@
 
 Enterprise Full-Stack Fitness & Companion Application (Android Mobile App + Web Portal).
 
-[![Build Pipeline](https://github.com/saimohith-24/FitnessPaw/actions/workflows/build.yml/badge.svg)](https://github.com/saimohith-24/FitnessPaw/actions/workflows/build.yml)
-[![Automated Test Suite](https://github.com/saimohith-24/FitnessPaw/actions/workflows/test.yml/badge.svg)](https://github.com/saimohith-24/FitnessPaw/actions/workflows/test.yml)
-[![Deployment Pipeline](https://github.com/saimohith-24/FitnessPaw/actions/workflows/deploy.yml/badge.svg)](https://github.com/saimohith-24/FitnessPaw/actions/workflows/deploy.yml)
+[![FitnessPaw QA Enterprise CI/CD](https://github.com/saimohith-24/FitnessPaw/actions/workflows/main.yml/badge.svg)](https://github.com/saimohith-24/FitnessPaw/actions/workflows/main.yml)
 [![Quality Gate](https://img.shields.io/badge/Quality--Gate-Passed-emerald.svg)](https://sonarcloud.io/)
 [![Coverage](https://img.shields.io/badge/Coverage-95.2%25-brightgreen.svg)]()
 
@@ -17,9 +15,7 @@ FitnessPaw is a modern weight, steps, and habit tracking system integrated with 
 ```
 FitnessPaw/
 ├── .github/workflows/         # Enterprise CI/CD Pipeline Definitions
-│   ├── build.yml              # Compiles and builds web dist/ and Android APKs
-│   ├── test.yml               # Independent parallel test execution jobs
-│   └── deploy.yml             # Deploys React Web App & generates release report
+│   └── main.yml               # Unified workflow containing all test jobs & deployment
 ├── android/                   # Native Mobile Project (Kotlin + Jetpack Compose)
 │   ├── app/src/main/          # Native implementation files (UI, VM, sensors)
 │   └── app/src/test/          # JUnit mobile unit testing
