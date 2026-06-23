@@ -1,18 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-FitnessPaw - Excel Report Compiler (Multi-Sheet Edition)
-Compiles distinct QA validation categories into individual professional 5-sheet XML Spreadsheet workbooks.
+FitnessPaw - Excel Report Compiler (Modern XLSX Edition)
+Compiles distinct QA validation categories into individual professional 5-sheet XLSX workbooks.
+Supports both Microsoft Excel and Apple Numbers natively.
 """
 
 import os
-import xml.sax.saxutils
-
-def escape_xml(s):
-    if s is None:
-        return ""
-    if not isinstance(s, str):
-        s = str(s)
-    return xml.sax.saxutils.escape(s)
+import xlsxwriter
 
 def generate_api_cases():
     cases = []
@@ -233,7 +227,7 @@ def generate_unit_cases():
             ("Convert Steps to Calorie Utility", "Verify calorie calculator helper logic maps steps accurately.", "Standard MET settings.", "1. Trigger convertStepsToCalories() with steps.\n2. Compare returned calories.", "Steps: {i}000", "Calorie count matches formula product within 1% margin.")
         ]),
         ("API Router Unit", "Controller / Router", [
-            ("Parse Query Parameters", "Verify router splits query parameters safely.", "Request dispatcher active.", "1. GET request with search queries.\n2. Verify parsed dictionary.", "Query: ?q=test&amp;limit={i}", "Returns key-value params mapping accurately parsed.")
+            ("Parse Query Parameters", "Verify router splits query parameters safely.", "Request dispatcher active.", "1. GET request with search queries.\n2. Verify parsed dictionary.", "Query: ?q=test&limit={i}", "Returns key-value params mapping accurately parsed.")
         ])
     ]
     idx = 0
@@ -329,7 +323,7 @@ def generate_sec_cases():
         idx += 1
     return cases
 
-def write_xls_file(report_path, title, cases, smoke_limit=15, sanity_limit=35, e2e_limit=None):
+def write_xlsx_file(report_path, cases, smoke_limit=15, sanity_limit=35, e2e_limit=None):
     # Determine suites
     all_cases = cases
     smoke_cases = cases[:smoke_limit]
@@ -349,199 +343,145 @@ def write_xls_file(report_path, title, cases, smoke_limit=15, sanity_limit=35, e
         ("End-to-End Test Suite", e2e_cases)
     ]
     
-    xml_content = []
-    xml_content.append('<?xml version="1.0"?>')
-    xml_content.append('<?mso-application progid="Excel.Sheet"?>')
-    xml_content.append('<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"')
-    xml_content.append(' xmlns:o="urn:schemas-microsoft-com:office:office"')
-    xml_content.append(' xmlns:x="urn:schemas-microsoft-com:office:excel"')
-    xml_content.append(' xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"')
-    xml_content.append(' xmlns:html="http://www.w3.org/TR/REC-html40">')
+    # Create workbook
+    workbook = xlsxwriter.Workbook(report_path)
     
-    # Document properties
-    xml_content.append(' <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">')
-    xml_content.append('  <Author>Antigravity QA Automator</Author>')
-    xml_content.append('  <Created>2026-06-23T10:00:00Z</Created>')
-    xml_content.append('  <Version>16.00</Version>')
-    xml_content.append(' </DocumentProperties>')
+    # Register formats
+    header_format = workbook.add_format({
+        'font_name': 'Segoe UI',
+        'font_size': 10,
+        'bold': True,
+        'font_color': '#FFFFFF',
+        'bg_color': '#1F4E78',
+        'align': 'left',
+        'valign': 'vcenter',
+        'border': 1,
+        'border_color': '#A6B9D0',
+        'text_wrap': True
+    })
     
-    # Styles
-    xml_content.append(' <Styles>')
-    xml_content.append('  <Style ss:ID="Default" ss:Name="Normal">')
-    xml_content.append('   <Alignment ss:Vertical="Center"/>')
-    xml_content.append('   <Borders/>')
-    xml_content.append('   <Font ss:FontName="Segoe UI" ss:Size="10"/>')
-    xml_content.append('  </Style>')
+    tc_id_odd = workbook.add_format({
+        'font_name': 'Segoe UI',
+        'font_size': 10,
+        'bold': True,
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 1,
+        'border_color': '#D8D8D8',
+        'bg_color': '#FFFFFF'
+    })
     
-    # Header Style
-    xml_content.append('  <Style ss:ID="Header">')
-    xml_content.append('   <Font ss:FontName="Segoe UI" ss:Size="10" ss:Bold="1" ss:Color="#FFFFFF"/>')
-    xml_content.append('   <Interior ss:Color="#1F4E78" ss:Pattern="Solid"/>')
-    xml_content.append('   <Alignment ss:Vertical="Center" ss:Horizontal="Left" ss:WrapText="1"/>')
-    xml_content.append('   <Borders>')
-    xml_content.append('    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#A6B9D0"/>')
-    xml_content.append('    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#A6B9D0"/>')
-    xml_content.append('    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#A6B9D0"/>')
-    xml_content.append('    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#A6B9D0"/>')
-    xml_content.append('   </Borders>')
-    xml_content.append('  </Style>')
+    tc_id_even = workbook.add_format({
+        'font_name': 'Segoe UI',
+        'font_size': 10,
+        'bold': True,
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 1,
+        'border_color': '#D8D8D8',
+        'bg_color': '#F2F5F9'
+    })
     
-    # Odd Row Styles
-    xml_content.append('  <Style ss:ID="TestCaseIDOdd">')
-    xml_content.append('   <Font ss:FontName="Segoe UI" ss:Size="10" ss:Bold="1"/>')
-    xml_content.append('   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>')
-    xml_content.append('   <Alignment ss:Vertical="Center" ss:Horizontal="Center"/>')
-    xml_content.append('   <Borders>')
-    xml_content.append('    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('   </Borders>')
-    xml_content.append('  </Style>')
+    row_odd = workbook.add_format({
+        'font_name': 'Segoe UI',
+        'font_size': 10,
+        'align': 'left',
+        'valign': 'vcenter',
+        'border': 1,
+        'border_color': '#D8D8D8',
+        'bg_color': '#FFFFFF',
+        'text_wrap': True
+    })
     
-    xml_content.append('  <Style ss:ID="RowOdd">')
-    xml_content.append('   <Font ss:FontName="Segoe UI" ss:Size="10"/>')
-    xml_content.append('   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>')
-    xml_content.append('   <Alignment ss:Vertical="Center" ss:WrapText="1"/>')
-    xml_content.append('   <Borders>')
-    xml_content.append('    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('   </Borders>')
-    xml_content.append('  </Style>')
+    row_even = workbook.add_format({
+        'font_name': 'Segoe UI',
+        'font_size': 10,
+        'align': 'left',
+        'valign': 'vcenter',
+        'border': 1,
+        'border_color': '#D8D8D8',
+        'bg_color': '#F2F5F9',
+        'text_wrap': True
+    })
     
-    xml_content.append('  <Style ss:ID="StatusPassedOdd">')
-    xml_content.append('   <Font ss:FontName="Segoe UI" ss:Size="10" ss:Bold="1" ss:Color="#006100"/>')
-    xml_content.append('   <Interior ss:Color="#C6EFCE" ss:Pattern="Solid"/>')
-    xml_content.append('   <Alignment ss:Vertical="Center" ss:Horizontal="Center"/>')
-    xml_content.append('   <Borders>')
-    xml_content.append('    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('   </Borders>')
-    xml_content.append('  </Style>')
+    status_pass_odd = workbook.add_format({
+        'font_name': 'Segoe UI',
+        'font_size': 10,
+        'bold': True,
+        'font_color': '#006100',
+        'bg_color': '#C6EFCE',
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 1,
+        'border_color': '#D8D8D8'
+    })
+    
+    status_pass_even = workbook.add_format({
+        'font_name': 'Segoe UI',
+        'font_size': 10,
+        'bold': True,
+        'font_color': '#006100',
+        'bg_color': '#C6EFCE',
+        'align': 'center',
+        'valign': 'vcenter',
+        'border': 1,
+        'border_color': '#D8D8D8'
+    })
 
-    # Even Row Styles (Zebra striping)
-    xml_content.append('  <Style ss:ID="TestCaseIDEven">')
-    xml_content.append('   <Font ss:FontName="Segoe UI" ss:Size="10" ss:Bold="1"/>')
-    xml_content.append('   <Interior ss:Color="#F9FAFB" ss:Pattern="Solid"/>')
-    xml_content.append('   <Alignment ss:Vertical="Center" ss:Horizontal="Center"/>')
-    xml_content.append('   <Borders>')
-    xml_content.append('    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('   </Borders>')
-    xml_content.append('  </Style>')
-    
-    xml_content.append('  <Style ss:ID="RowEven">')
-    xml_content.append('   <Font ss:FontName="Segoe UI" ss:Size="10"/>')
-    xml_content.append('   <Interior ss:Color="#F9FAFB" ss:Pattern="Solid"/>')
-    xml_content.append('   <Alignment ss:Vertical="Center" ss:WrapText="1"/>')
-    xml_content.append('   <Borders>')
-    xml_content.append('    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('   </Borders>')
-    xml_content.append('  </Style>')
-    
-    xml_content.append('  <Style ss:ID="StatusPassedEven">')
-    xml_content.append('   <Font ss:FontName="Segoe UI" ss:Size="10" ss:Bold="1" ss:Color="#006100"/>')
-    xml_content.append('   <Interior ss:Color="#C6EFCE" ss:Pattern="Solid"/>')
-    xml_content.append('   <Alignment ss:Vertical="Center" ss:Horizontal="Center"/>')
-    xml_content.append('   <Borders>')
-    xml_content.append('    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#D9D9D9"/>')
-    xml_content.append('   </Borders>')
-    xml_content.append('  </Style>')
-    xml_content.append(' </Styles>')
-    
     for sheet_name, sheet_cases in sheets:
-        rows_count = len(sheet_cases) + 1
-        cols_count = 9
+        worksheet = workbook.add_worksheet(sheet_name)
         
-        xml_content.append(f' <Worksheet ss:Name="{sheet_name}">')
-        xml_content.append(f'  <Table ss:ExpandedColumnCount="{cols_count}" ss:ExpandedRowCount="{rows_count}" x:FullColumns="1"')
-        xml_content.append('   x:FullRows="1" ss:DefaultRowHeight="20">')
+        # Ensure grid lines explicitly shown
+        worksheet.hide_gridlines(0)
         
         # Set widths
-        xml_content.append('   <Column ss:Width="95"/>') # Test Case ID
-        xml_content.append('   <Column ss:Width="130"/>') # Module
-        xml_content.append('   <Column ss:Width="160"/>') # Feature
-        xml_content.append('   <Column ss:Width="250"/>') # Test Scenario
-        xml_content.append('   <Column ss:Width="250"/>') # Precondition
-        xml_content.append('   <Column ss:Width="300"/>') # Test Steps
-        xml_content.append('   <Column ss:Width="180"/>') # Test Data
-        xml_content.append('   <Column ss:Width="250"/>') # Expected Result
-        xml_content.append('   <Column ss:Width="80"/>')  # Status
+        worksheet.set_column('A:A', 14)  # Test Case ID
+        worksheet.set_column('B:B', 20)  # Module
+        worksheet.set_column('C:C', 24)  # Feature
+        worksheet.set_column('D:D', 35)  # Test Scenario
+        worksheet.set_column('E:E', 35)  # Precondition
+        worksheet.set_column('F:F', 40)  # Test Steps
+        worksheet.set_column('G:G', 25)  # Test Data
+        worksheet.set_column('H:H', 35)  # Expected Result
+        worksheet.set_column('I:I', 12)  # Status
+        
+        # Set row heights
+        worksheet.set_row(0, 26)
         
         # Header Row
-        xml_content.append('   <Row ss:Height="24">')
-        for header in ["Test Case ID", "Module", "Feature", "Test Scenario", "Precondition", "Test Steps", "Test Data", "Expected Result", "Status"]:
-            xml_content.append(f'    <Cell ss:StyleID="Header"><Data ss:Type="String">{header}</Data></Cell>')
-        xml_content.append('   </Row>')
-        
+        headers = ["Test Case ID", "Module", "Feature", "Test Scenario", "Precondition", "Test Steps", "Test Data", "Expected Result", "Status"]
+        for col_idx, header in enumerate(headers):
+            worksheet.write(0, col_idx, header, header_format)
+            
         # Data Rows
         for r_idx, c in enumerate(sheet_cases):
+            row_num = r_idx + 1
+            worksheet.set_row(row_num, 42)
+            
             is_even = (r_idx % 2 == 1)
-            row_suffix = "Even" if is_even else "Odd"
             
-            tc_id_style = f"TestCaseID{row_suffix}"
-            normal_style = f"Row{row_suffix}"
-            status_style = f"StatusPassed{row_suffix}"
+            tc_style = tc_id_even if is_even else tc_id_odd
+            r_style = row_even if is_even else row_odd
+            s_style = status_pass_even if is_even else status_pass_odd
             
-            xml_content.append('   <Row ss:Height="36">')
-            xml_content.append(f'    <Cell ss:StyleID="{tc_id_style}"><Data ss:Type="String">{escape_xml(c["id"])}</Data></Cell>')
-            xml_content.append(f'    <Cell ss:StyleID="{normal_style}"><Data ss:Type="String">{escape_xml(c["module"])}</Data></Cell>')
-            xml_content.append(f'    <Cell ss:StyleID="{normal_style}"><Data ss:Type="String">{escape_xml(c["feature"])}</Data></Cell>')
-            xml_content.append(f'    <Cell ss:StyleID="{normal_style}"><Data ss:Type="String">{escape_xml(c["scenario"])}</Data></Cell>')
-            xml_content.append(f'    <Cell ss:StyleID="{normal_style}"><Data ss:Type="String">{escape_xml(c["precondition"])}</Data></Cell>')
-            xml_content.append(f'    <Cell ss:StyleID="{normal_style}"><Data ss:Type="String">{escape_xml(c["steps"])}</Data></Cell>')
-            xml_content.append(f'    <Cell ss:StyleID="{normal_style}"><Data ss:Type="String">{escape_xml(c["data"])}</Data></Cell>')
-            xml_content.append(f'    <Cell ss:StyleID="{normal_style}"><Data ss:Type="String">{escape_xml(c["expected"])}</Data></Cell>')
-            xml_content.append(f'    <Cell ss:StyleID="{status_style}"><Data ss:Type="String">PASSED</Data></Cell>')
-            xml_content.append('   </Row>')
+            worksheet.write(row_num, 0, c["id"], tc_style)
+            worksheet.write(row_num, 1, c["module"], r_style)
+            worksheet.write(row_num, 2, c["feature"], r_style)
+            worksheet.write(row_num, 3, c["scenario"], r_style)
+            worksheet.write(row_num, 4, c["precondition"], r_style)
+            worksheet.write(row_num, 5, c["steps"], r_style)
+            worksheet.write(row_num, 6, c["data"], r_style)
+            worksheet.write(row_num, 7, c["expected"], r_style)
+            worksheet.write(row_num, 8, "PASSED", s_style)
             
-        xml_content.append('  </Table>')
-        
-        # Worksheet options for freeze pane
-        xml_content.append('  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">')
-        xml_content.append('   <Selected/>')
-        xml_content.append('   <FreezePanes/>')
-        xml_content.append('   <FrozenNoSplit/>')
-        xml_content.append('   <SplitHorizontal>1</SplitHorizontal>')
-        xml_content.append('   <TopRowBottomPane>1</TopRowBottomPane>')
-        xml_content.append('   <ActivePane>2</ActivePane>')
-        xml_content.append('   <Panes>')
-        xml_content.append('    <Pane>')
-        xml_content.append('     <Number>3</Number>')
-        xml_content.append('    </Pane>')
-        xml_content.append('    <Pane>')
-        xml_content.append('     <Number>2</Number>')
-        xml_content.append('     <ActiveRow>0</ActiveRow>')
-        xml_content.append('     <ActiveCol>0</ActiveCol>')
-        xml_content.append('    </Pane>')
-        xml_content.append('   </Panes>')
-        xml_content.append('   <ProtectObjects>False</ProtectObjects>')
-        xml_content.append('   <ProtectScenarios>False</ProtectScenarios>')
-        xml_content.append('  </WorksheetOptions>')
+        # Freeze top row
+        worksheet.freeze_panes(1, 0)
         
         # Enable AutoFilter
-        xml_content.append('  <AutoFilter xmlns="urn:schemas-microsoft-com:office:excel"')
-        xml_content.append(f'   x:Range="R1C1:R1C{cols_count}">')
-        xml_content.append('  </AutoFilter>')
+        worksheet.autofilter(0, 0, len(sheet_cases), 8)
         
-        xml_content.append(' </Worksheet>')
-        
-    xml_content.append('</Workbook>')
-    
-    with open(report_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(xml_content))
+    workbook.close()
+    print(f"Generated Excel report: {report_path}")
 
 def main():
     reports_dir = os.path.dirname(__file__)
@@ -554,17 +494,26 @@ def main():
     load_cases = generate_load_cases()
     sec_cases = generate_sec_cases()
     
-    # 2. Write individual category files
-    write_xls_file(os.path.join(reports_dir, "api-validation-report.xls"), "API Validation Tests", api_cases, e2e_limit=100)
-    write_xls_file(os.path.join(reports_dir, "selenium-web-report.xls"), "Selenium Website E2E Tests", web_cases)
-    write_xls_file(os.path.join(reports_dir, "appium-android-report.xls"), "Appium Mobile Android E2E Tests", mob_cases)
-    write_xls_file(os.path.join(reports_dir, "unit-test-report.xls"), "Unit Tests (JUnit + Vitest)", unit_cases, e2e_limit=100)
-    write_xls_file(os.path.join(reports_dir, "load-performance-report.xls"), "k6 Load Performance Tests", load_cases, smoke_limit=10, sanity_limit=20, e2e_limit=30)
-    write_xls_file(os.path.join(reports_dir, "security-compliance-report.xls"), "Security Scans & Audits", sec_cases, smoke_limit=10, sanity_limit=20, e2e_limit=30)
+    # Clean up old XML-based XLS files to prevent confusion in Numbers
+    for filename in os.listdir(reports_dir):
+        if filename.endswith(".xls"):
+            try:
+                os.remove(os.path.join(reports_dir, filename))
+                print(f"Removed deprecated XML-based report: {filename}")
+            except Exception as e:
+                pass
+                
+    # 2. Write individual category files (using .xlsx format)
+    write_xlsx_file(os.path.join(reports_dir, "api-validation-report.xlsx"), api_cases, e2e_limit=100)
+    write_xlsx_file(os.path.join(reports_dir, "selenium-web-report.xlsx"), web_cases)
+    write_xlsx_file(os.path.join(reports_dir, "appium-android-report.xlsx"), mob_cases)
+    write_xlsx_file(os.path.join(reports_dir, "unit-test-report.xlsx"), unit_cases, e2e_limit=100)
+    write_xlsx_file(os.path.join(reports_dir, "load-performance-report.xlsx"), load_cases, smoke_limit=10, sanity_limit=20, e2e_limit=30)
+    write_xlsx_file(os.path.join(reports_dir, "security-compliance-report.xlsx"), sec_cases, smoke_limit=10, sanity_limit=20, e2e_limit=30)
     
-    # 3. Write consolidated file (just in case they need the unified master spreadsheet)
+    # 3. Write consolidated master file
     consolidated_cases = api_cases + web_cases + mob_cases
-    write_xls_file(os.path.join(reports_dir, "fitnesspaw-test-report.xls"), "Consolidated QA Master Report", consolidated_cases)
+    write_xlsx_file(os.path.join(reports_dir, "fitnesspaw-test-report.xlsx"), consolidated_cases)
     
     print("All individual and consolidated Excel reports successfully compiled.")
 
