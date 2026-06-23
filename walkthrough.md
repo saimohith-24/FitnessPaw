@@ -89,3 +89,14 @@ The tests in `testing/` run locally out-of-the-box and generate styled HTML repo
 
 - **Detekt Static Analysis**: Configured via [detekt.yml](file:///Users/saimohith24/Desktop/FitnessPaw/testing/codequality/detekt.yml) and integrated into gradle tasks. Builds ignore linter failures (`ignoreFailures = true`) in Gradle to ensure compliance report generation without breaking compiles.
 - **SonarQube Scanner**: Key parameters, exclusion paths, and encoding standards mapped in [sonar-project.properties](file:///Users/saimohith24/Desktop/FitnessPaw/sonar-project.properties).
+
+---
+
+## 📊 Excel QA Master Report
+I created [generate-excel-report.py](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/generate-excel-report.py) to compile all QA test cases, descriptions, boundaries, and result status into a single formatted, styled spreadsheet [fitnesspaw-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/fitnesspaw-test-report.xls). This allows you to open and view the QA metrics inside Excel natively, with custom colors and styling!
+- *Verification Command:*
+  ```bash
+  python3 testing/reports/generate-excel-report.py
+  ```
+- *Output Spreadsheet:* [fitnesspaw-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/fitnesspaw-test-report.xls)
+
