@@ -93,14 +93,14 @@ The tests in `testing/` run locally out-of-the-box and generate styled HTML repo
 ---
 
 ## 📊 Excel QA Master Reports
-I updated [generate-excel-report.py](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/generate-excel-report.py) to compile QA test cases, modules, features, preconditions, steps, test data, and expected results into **separate individual XLS files** for each testing category, as well as a consolidated master report:
-1. **[selenium-web-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/selenium-web-report.xls)** (305 Selenium Website UI Tests)
-2. **[appium-android-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/appium-android-report.xls)** (300 Appium Mobile Android UI Tests)
-3. **[api-validation-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/api-validation-report.xls)** (310 Firebase API Validation Tests)
-4. **[unit-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/unit-test-report.xls)** (300 JUnit + Vitest Unit Tests)
-5. **[load-performance-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/load-performance-report.xls)** (100 k6 Load Performance Tests)
-6. **[security-compliance-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/security-compliance-report.xls)** (100 Security Scans & Secrets Audits)
-7. **[fitnesspaw-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/fitnesspaw-test-report.xls)** (Consolidated QA Master Report of API + Web + Mobile)
+I updated [generate-excel-report.py](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/generate-excel-report.py) to compile QA test cases, modules, features, preconditions, steps, test data, and expected results into **separate individual XLSX files** for each testing category, as well as a consolidated master report:
+1. **[selenium-web-report.xlsx](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/selenium-web-report.xlsx)** (305 Selenium Website UI Tests)
+2. **[appium-android-report.xlsx](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/appium-android-report.xlsx)** (300 Appium Mobile Android UI Tests)
+3. **[api-validation-report.xlsx](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/api-validation-report.xlsx)** (310 Firebase API Validation Tests)
+4. **[unit-test-report.xlsx](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/unit-test-report.xlsx)** (300 JUnit + Vitest Unit Tests)
+5. **[load-performance-report.xlsx](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/load-performance-report.xlsx)** (100 k6 Load Performance Tests)
+6. **[security-compliance-report.xlsx](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/security-compliance-report.xlsx)** (100 Security Scans & Secrets Audits)
+7. **[fitnesspaw-test-report.xlsx](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/fitnesspaw-test-report.xlsx)** (Consolidated QA Master Report of API + Web + Mobile)
 
 Each workbook contains **five separate styled worksheets/tabs** corresponding to:
 - **`All Test Cases`**: Complete list of all test cases in that category.
