@@ -224,10 +224,13 @@ jobs:
       - name: Checkout Codebase
         uses: actions/checkout@v4
 
+      - name: Setup k6
+        uses: grafana/setup-k6-action@v1
+
       - name: Run k6 Load Test
-        uses: grafana/k6-action@v0.3.1
-        with:
-          filename: testing/load/k6-load-test.js
+        run: |
+          mkdir -p testing/reports
+          k6 run --no-thresholds testing/load/k6-load-test.js
 
       - name: Upload Load Testing Report
         uses: actions/upload-artifact@v4

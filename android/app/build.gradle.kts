@@ -1,3 +1,5 @@
+import java.io.File
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -20,6 +22,22 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val keystoreFilePath = System.getenv("KEYSTORE_PATH")
+            val keystorePasswordVal = System.getenv("KEYSTORE_PASSWORD")
+            val keyAliasVal = System.getenv("KEY_ALIAS")
+            val keyPasswordVal = System.getenv("KEY_PASSWORD")
+
+            if (!keystoreFilePath.isNullOrEmpty() && File(keystoreFilePath).exists()) {
+                storeFile = file(keystoreFilePath)
+                storePassword = keystorePasswordVal
+                keyAlias = keyAliasVal
+                keyPassword = keyPasswordVal
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -27,6 +45,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            val keystoreFilePath = System.getenv("KEYSTORE_PATH")
+            if (!keystoreFilePath.isNullOrEmpty() && File(keystoreFilePath).exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 
