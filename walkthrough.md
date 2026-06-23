@@ -93,7 +93,21 @@ The tests in `testing/` run locally out-of-the-box and generate styled HTML repo
 ---
 
 ## 📊 Excel QA Master Report
-I created [generate-excel-report.py](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/generate-excel-report.py) to compile all QA test cases, descriptions, boundaries, and result status into a single formatted, styled spreadsheet [fitnesspaw-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/fitnesspaw-test-report.xls). This allows you to open and view the QA metrics inside Excel natively, with custom colors and styling!
+I created [generate-excel-report.py](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/generate-excel-report.py) to compile all 915 QA test cases, modules, features, preconditions, steps, test data, and expected results into a native XML Spreadsheet 2003 workbook [fitnesspaw-test-report.xls](file:///Users/saimohith24/Desktop/FitnessPaw/testing/reports/fitnesspaw-test-report.xls).
+The workbook contains **five separate styled worksheets/tabs** corresponding to:
+1. **`All Test Cases`**: Complete list of all 915 test cases.
+2. **`Smoke Test Suite`**: Core checklist of the most critical 45 test cases (15 API, 15 Web, 15 Mobile).
+3. **`Sanity Test Suite`**: Subset of 105 primary verification test cases (35 API, 35 Web, 35 Mobile).
+4. **`Regression Test Suite`**: Full regression checklist containing all 915 test cases.
+5. **`End-to-End Test Suite`**: Curated list of all 605 E2E UI verification test cases (305 Web, 300 Mobile).
+
+**Visual Styling (Matching the Screenshot):**
+- **Dark Blue Header Row**: Colored in `#1F4E78` with bold white text.
+- **AutoFilter & Freeze Panes**: Automatically enabled on the header row to allow easy sorting and filtering, and freeze the headers when scrolling.
+- **Alternating Zebra Rows**: Subtle white and light-gray (`#F9FAFB`) zebra striping for high readability.
+- **Bold Test Case IDs**: Center-aligned bold codes in Column A (e.g., `TC-API-001`).
+- **Pass Status Badges**: Center-aligned, bold green text (`#006100`) on a light green background (`#C6EFCE`) indicating `PASSED`.
+
 - *Verification Command:*
   ```bash
   python3 testing/reports/generate-excel-report.py
