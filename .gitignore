@@ -1,0 +1,24 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local environment variables/properties
+local.properties
+*.local
+.env
+.env.*
+
+# Subproject build outputs and dependencies
+**/node_modules/
+**/dist/
+**/build/
+**/.gradle/

@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  /* HSL Tailored Color Palette - Dark Mode Primary Default */
+  --bg-base: 224 71.4% 4.1%;      /* #020617 */
+  --bg-surface: 222.2 47.4% 11.2%; /* #0f172a */
+  --bg-muted: 217.2 32.6% 17.5%;   /* #1e293b */
+  
+  --border-color: 217.2 32.6% 17.5% / 0.8;
+  --border-glow: 217.2 32.6% 17.5% / 0.3;
+  
+  --text-primary: 210 40% 98%;    /* Near white */
+  --text-secondary: 215.4 16.3% 56.9%; /* Slate grey */
+  --text-muted: 215 20.2% 65.1% / 0.5;
+  
+  --primary: 228 100% 78%;        /* #8EA2FF (Soft Neon Indigo) */
+  --primary-glow: 228 100% 78% / 0.15;
+  --primary-border: 228 100% 78% / 0.4;
+  
+  --secondary: 271 91% 65%;       /* Purple */
+  --secondary-glow: 271 91% 65% / 0.15;
+  
+  --success: 150 84% 37%;         /* Emerald green */
+  --success-glow: 150 84% 37% / 0.15;
+  
+  --warning: 38 92% 50%;          /* Amber */
+  --error: 0 84.2% 60.2% ;        /* Rose red */
+  --error-glow: 0 84.2% 60.2% / 0.15;
+  
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  
+  --shadow-premium: 0 10px 30px -10px rgba(0,0,0,0.7), 0 1px 1px 0 rgba(255,255,255,0.05) inset;
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --glow-intensity: 0 0 15px;
+}
+
+[data-theme="light"] {
+  --bg-base: 210 40% 96.1%;        /* Off-white */
+  --bg-surface: 0 0% 100%;         /* Pure white */
+  --bg-muted: 210 40% 90%;         /* Soft grey */
+  
+  --border-color: 214.3 31.8% 91.4%;
+  --border-glow: 214.3 31.8% 91.4% / 0.5;
+  
+  --text-primary: 222.2 47.4% 11.2%; /* Dark slate */
+  --text-secondary: 215.4 16.3% 46.9%;
+  
+  --primary: 228 100% 64%;        /* Denser indigo for light contrast */
+  --primary-glow: 228 100% 64% / 0.1;
+  --primary-border: 228 100% 64% / 0.3;
+  
+  --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.08), 0 1px 1px 0 rgba(0,0,0,0.02) inset;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: hsl(var(--bg-base));
+  color: hsl(var(--text-primary));
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--bg-base));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--bg-muted));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--text-secondary) / 0.5);
+}
+
+/* Base Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: hsl(var(--text-primary));
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+p {
+  color: hsl(var(--text-secondary));
+}
+
+a {
+  color: hsl(var(--primary));
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+a:hover {
+  filter: brightness(1.2);
+}
+
+/* Premium Layout Utilities */
+.glass-card {
+  background-color: hsl(var(--bg-surface));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-premium);
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(8px);
+}
+
+.glass-card:hover {
+  border-color: hsl(var(--primary) / 0.25);
+  box-shadow: 0 15px 35px -10px rgba(0,0,0,0.8), 0 0 15px 0 hsl(var(--primary) / 0.05);
+}
+
+/* Custom Inputs & Buttons */
+.btn-primary {
+  background-color: hsl(var(--primary));
+  color: #020617;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px 0 hsl(var(--primary) / 0.3);
+  transition: var(--transition-smooth);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 hsl(var(--primary) / 0.5);
+  filter: brightness(1.05);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  background-color: hsl(var(--bg-muted));
+  color: hsl(var(--text-secondary));
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background-color: hsl(var(--bg-muted));
+  color: hsl(var(--text-primary));
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.btn-secondary:hover {
+  background-color: hsl(var(--bg-muted) / 0.8);
+  border-color: hsl(var(--primary) / 0.3);
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: hsl(var(--bg-muted) / 0.5);
+  color: hsl(var(--text-primary));
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.input-field:focus {
+  border-color: hsl(var(--primary));
+  background-color: hsl(var(--bg-muted));
+  box-shadow: 0 0 0 4px hsl(var(--primary) / 0.15);
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes heartFloat {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  15% { opacity: 1; }
+  80% { opacity: 0.8; }
+  100% { transform: translateY(-80px) scale(1.4); opacity: 0; }
+}
+
+@keyframes progressGlow {
+  0%, 100% { filter: drop-shadow(0 0 2px hsl(var(--primary) / 0.4)); }
+  50% { filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.8)); }
+}
+
+.anim-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.anim-heart {
+  animation: heartFloat 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.anim-glow {
+  animation: progressGlow 3s ease-in-out infinite;
+}
+
+/* Responsive Grid layouts */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1045250132329",
+    "project_id": "fitnesspaw-2faa2",
+    "storage_bucket": "fitnesspaw-2faa2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045250132329:android:0872791e604592ad5b95f8",
+        "android_client_info": {
+          "package_name": "com.example.fitnesspaw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAun36JjCkHJm7Mb_QIS8oJ5gr5OLIYKhI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

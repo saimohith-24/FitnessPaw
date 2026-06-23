@@ -1,0 +1,124 @@
+INFO         | Android emulator version 36.5.11.0 (build_id 15261927) (CL:N/A)
+INFO         | Graphics backend: gfxstream
+INFO         | Found systemPath /Users/saimohith24/Library/Android/sdk/system-images/android-36/google_apis/arm64-v8a/
+WARNING      | Please update the emulator to one that supports the feature(s): VulkanVirtualQueue
+INFO         | Guest GLES Driver: Auto (ext controls)
+INFO         | emuglConfig_init: vulkan_mode_selected:lavapipe gles_mode_selected:host
+INFO         | Checking system compatibility:
+INFO         |   Checking: hasSufficientDiskSpace
+INFO         |      Ok: Disk space requirements to run avd: `Pixel_6` are met
+INFO         |   Checking: hasSufficientHwGpu
+INFO         |      Ok: Hardware GPU compatibility checks are not required
+INFO         |   Checking: hasSufficientSystem
+INFO         |      Ok: System requirements to run avd: `Pixel_6` are met
+INFO         | Storing crashdata in: /tmp/android-saimohith24/emu-crash-36.5.11.db, detection is enabled for process: 4530
+INFO         | Initializing gfxstream backend
+INFO         | android_startOpenglesRenderer: gpu info
+INFO         | 
+INFO         | initIcdPaths: ICD set to 'lavapipe', using Lavapipe ICD
+INFO         | Setting ICD filenames for the loader = /Users/saimohith24/Library/Android/sdk/emulator/lib64/vulkan/lvp_icd.json
+INFO         | SharedLibrary::open for [/Users/saimohith24/Library/Android/sdk/emulator/qemu/darwin-aarch64/lib64/vulkan/libvulkan.dylib]
+INFO         | Added library: /Users/saimohith24/Library/Android/sdk/emulator/qemu/darwin-aarch64/lib64/vulkan/libvulkan.dylib
+INFO         | Enabling Vulkan portability.
+INFO         | Selecting Vulkan device: llvmpipe (LLVM 21.1.4, 128 bits), Version: 1.4.330
+INFO         | Initializing VkEmulation features:
+INFO         |     glInteropSupported: false
+INFO         |     useDeferredCommands: true
+INFO         |     createResourceWithRequirements: true
+INFO         |     useVulkanComposition: false
+INFO         |     useVulkanNativeSwapchain: false
+INFO         |     enable guestRenderDoc: false
+INFO         |     ASTC LDR emulation mode: Gpu
+INFO         |     enable ETC2 emulation: true
+INFO         |     enable Ycbcr emulation: false
+INFO         |     guestVulkanOnly: false
+INFO         |     useDedicatedAllocations: false
+INFO         |     guestVulkanMaxApiVersion: 1.3.0
+INFO         | Graphics Adapter Vendor Google (Apple)
+INFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Apple M4)
+INFO         | Graphics API Version OpenGL ES 3.0 (4.1 Metal - 90.5)
+INFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 
+INFO         | Graphics Device Extensions N/A
+INFO         | Disabling sparse binding feature support
+INFO         | Sending adb public key [QAAAAPcePnU5/bcSh0d0HrALmDqkxHyREmaGuAyfpepnn7Daj7ffQAbVVy9l6rd/svewPUNc+PLIKQXn7vz5tcIkavRhM6vUeHodghPgNynPRNx4GwRLwostdFJ8Fcldi9uBLhs/5g0DwWtDlNcLEgmR/jygHo628F1FUoyJTuhO/nNaDYmhI2xgpM7yZjPXYsh1LEwd6aJUooHSPQT3RVUr1kjR7rwXVHyQmQ8TWrjrttJqu29SUZGCxO3ui3v3KNPNdvGN1uE2LA3ls9J0aUQc9+zy93q9aDoG7ge/cOtmUam8kp2QLH/LasqTwYY9qiW/KJlVtd6Wc0IqCmegs3p/oGCryZK+SCSUJ3ts3yCtyqYssWQsyvZKil6798VY35aI0N+GiSsw6GGl5H0Q01Vy5Si/62bMIflyYxddN6j84urNq8GC4dd6ORX+vmZt39jsYvhFsYePKcLtxyG7MbHdHXBAmDwwBPVC8SYM/BzXETTOLAA6HH2+svD+412Bw6jynlwhcuU2vTfO/GylvQtfobAw5zSWL5kdVlacyhtG1tGugaYQ2tkZFyjJdNlojH03f09mUTo9KWaxCbIr23UtetiJ3saLS3EAEyFW4vxGKHTHU6PonBBrfvb3cOOXZyXufU2rvMw5R799/BLaoy88kDb5MFOJ7wVi2j53ugSrKyQ3lcyBaAEAAQA= saimohith24@unknown]
+INFO         | Userspace boot properties:
+INFO         |   androidboot.boot_devices=a003600.virtio_mmio
+INFO         |   androidboot.dalvik.vm.heapsize=512m
+INFO         |   androidboot.debug.hwui.renderer=skiagl
+INFO         |   androidboot.hardware=ranchu
+INFO         |   androidboot.hardware.gltransport=pipe
+INFO         |   androidboot.hardware.vulkan=ranchu
+INFO         |   androidboot.logcat=*:V
+INFO         |   androidboot.opengles.version=196608
+INFO         |   androidboot.qemu=1
+INFO         |   androidboot.qemu.adb.pubkey=QAAAAPcePnU5/bcSh0d0HrALmDqkxHyREmaGuAyfpepnn7Daj7ffQAbVVy9l6rd/svewPUNc+PLIKQXn7vz5tcIkavRhM6vUeHodghPgNynPRNx4GwRLwostdFJ8Fcldi9uBLhs/5g0DwWtDlNcLEgmR/jygHo628F1FUoyJTuhO/nNaDYmhI2xgpM7yZjPXYsh1LEwd6aJUooHSPQT3RVUr1kjR7rwXVHyQmQ8TWrjrttJqu29SUZGCxO3ui3v3KNPNdvGN1uE2LA3ls9J0aUQc9+zy93q9aDoG7ge/cOtmUam8kp2QLH/LasqTwYY9qiW/KJlVtd6Wc0IqCmegs3p/oGCryZK+SCSUJ3ts3yCtyqYssWQsyvZKil6798VY35aI0N+GiSsw6GGl5H0Q01Vy5Si/62bMIflyYxddN6j84urNq8GC4dd6ORX+vmZt39jsYvhFsYePKcLtxyG7MbHdHXBAmDwwBPVC8SYM/BzXETTOLAA6HH2+svD+412Bw6jynlwhcuU2vTfO/GylvQtfobAw5zSWL5kdVlacyhtG1tGugaYQ2tkZFyjJdNlojH03f09mUTo9KWaxCbIr23UtetiJ3saLS3EAEyFW4vxGKHTHU6PonBBrfvb3cOOXZyXufU2rvMw5R799/BLaoy88kDb5MFOJ7wVi2j53ugSrKyQ3lcyBaAEAAQA= saimohith24@unknown
+INFO         |   androidboot.qemu.avd_name=Pixel_6
+INFO         |   androidboot.qemu.camera_hq_edge_processing=0
+INFO         |   androidboot.qemu.camera_protocol_ver=1
+INFO         |   androidboot.qemu.cpuvulkan.version=4202496
+INFO         |   androidboot.qemu.gltransport.drawFlushInterval=800
+INFO         |   androidboot.qemu.gltransport.name=pipe
+INFO         |   androidboot.qemu.hwcodec.avcdec=2
+INFO         |   androidboot.qemu.hwcodec.hevcdec=2
+INFO         |   androidboot.qemu.hwcodec.vpxdec=2
+INFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647
+INFO         |   androidboot.qemu.skin=pixel_6
+INFO         |   androidboot.qemu.virtiowifi=1
+INFO         |   androidboot.qemu.vsync=60
+INFO         |   androidboot.serialno=EMULATOR36X5X11X0
+INFO         |   androidboot.vbmeta.digest=e70973301f9a2e629016c4d44449b90fd236882d05bc12a62cbb363284ad1aa7
+INFO         |   androidboot.vbmeta.hash_alg=sha256
+INFO         |   androidboot.vbmeta.size=6784
+INFO         |   androidboot.veritymode=enforcing
+INFO         | Monitoring duration of emulator setup.
+WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
+INFO         | Using security allow list from: /Users/saimohith24/Library/Android/sdk/emulator/lib/emulator_access.json
+WARNING      | *** Basic token auth should only be used by android-studio ***
+INFO         | The active JSON Web Key Sets can be found here: /Users/saimohith24/Library/Caches/TemporaryItems/avd/running/4530/jwks/79611158-e2d4-4d34-b722-64088ffcf674/active.jwk
+INFO         | Scanning /Users/saimohith24/Library/Caches/TemporaryItems/avd/running/4530/jwks/79611158-e2d4-4d34-b722-64088ffcf674 for jwk keys.
+INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
+INFO         | Advertising in: /Users/saimohith24/Library/Caches/TemporaryItems/avd/running/pid_4530.ini
+INFO         | Successfully initialized netsim WiFi
+INFO         | Activated packet streamer for uwb emulation
+INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
+INFO         | setDisplayActiveConfig: id:0, 1080x2400
+INFO         | emulatorSetupEnvironment: Setting up screen background view and display layout at env:1080x2400, lcd:1080x2400
+WARNING      | getEnvironmentConfig: No environment config is provided
+INFO         | getEnvironmentConfig: Using default virtual scene contents for the environment.
+INFO         | Checking system compatibility:
+INFO         |   Checking: hasSufficientDiskSpace
+INFO         |      Ok: Disk space requirements to run avd: `Pixel_6` are met
+INFO         |   Checking: hasSufficientHwGpu
+INFO         |      Ok: Hardware GPU compatibility checks are not required
+INFO         |   Checking: hasSufficientSystem
+INFO         |      Ok: System requirements to run avd: `Pixel_6` are met
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_rgbcSensorValueWidget_valueChanged() (:0, )
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_posture_valueChanged(int) (:0, )
+INFO         | Loading snapshot 'default_boot'...
+INFO         | GPU Vendor=[Google (Apple)]
+INFO         | GPU Renderer=[Android Emulator OpenGL ES Translator (Apple M4)]
+INFO         | GPU Version=[OpenGL ES 3.0 (4.1 Metal - 90.5)]
+INFO         | Warning: QObject::connect: Cannot queue arguments of type 'std::vector<android::emulation::control::SnapshotInfo>'
+(Make sure 'std::vector<android::emulation::control::SnapshotInfo>' is registered using qRegisterMetaType().) (:0, )
+INFO         | AVD supportsNativeGLES=1, supportsGuestAngle=1
+INFO         | Guest Angle is still unstable for API > 35.
+INFO         | Warning: QObject::connect: No such signal ToolWindow::microphoneEnabledChanged() in /Volumes/Android/buildbot/src/googleplex-android/emu-36-5-release/external/qemu/android/android-ui/modules/aemu-ui-qt/src/android/skin/qt/extended-window.cpp:160 (:0, )
+INFO         | Warning: QObject::connect:  (sender name:   'ToolControls') (:0, )
+INFO         | Warning: QObject::connect:  (receiver name: 'microphonePage') (:0, )
+INFO         | Warning: QObject::connect: No such signal MicrophonePage::microphoneEnabledChanged() in /Volumes/Android/buildbot/src/googleplex-android/emu-36-5-release/external/qemu/android/android-ui/modules/aemu-ui-qt/src/android/skin/qt/extended-window.cpp:162 (:0, )
+INFO         | Warning: QObject::connect:  (sender name:   'microphonePage') (:0, )
+INFO         | Warning: QObject::connect:  (receiver name: 'ToolControls') (:0, )
+INFO         | Created extended window in 205.229ms
+INFO         | Successfully loaded snapshot 'default_boot' using 1071 ms
+INFO         | GPU Vendor=[Google (Apple)]
+INFO         | GPU Renderer=[Android Emulator OpenGL ES Translator (Apple M4)]
+INFO         | GPU Version=[OpenGL ES 3.0 (4.1 Metal - 90.5)]
+INFO         | Wait for emulator (pid 4530) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+
+INFO         | Saving with gfxstream=1
+INFO         | Saving snapshot 'default_boot' using 2147 ms
+INFO         | GPU Vendor=[Google (Apple)]
+INFO         | GPU Renderer=[Android Emulator OpenGL ES Translator (Apple M4)]
+INFO         | GPU Version=[OpenGL ES 3.0 (4.1 Metal - 90.5)]
+WARNING      | Netsim Wifi localhost:50886 is gone due to CANCELLED
