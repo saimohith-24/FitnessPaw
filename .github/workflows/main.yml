@@ -185,6 +185,12 @@ jobs:
       - name: Grant Execute Permission to Gradlew
         run: chmod +x android/gradlew
 
+      - name: Android CI Diagnostics
+        run: |
+          git rev-parse HEAD
+          ls -lh android/app/src/main/res/drawable/panda*
+          file android/app/src/main/res/drawable/panda_*.png
+
       - name: Build Debug APK (Compile Verification)
         run: |
           cd android
