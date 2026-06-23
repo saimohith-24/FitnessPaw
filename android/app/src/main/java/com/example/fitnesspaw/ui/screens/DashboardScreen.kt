@@ -159,7 +159,8 @@ fun DashboardScreen(viewModel: MainViewModel) {
     // Dynamic Pet Mood Logic from dynamic habits completed count
     val completedHabitsCount = customHabits.count { it.completed }
     val totalHabitsCount = customHabits.size
-    val progressTarget = if (totalHabitsCount == 0) 1.0f else completedHabitsCount.toFloat() / totalHabitsCount
+    // For new users with no habits, ring should be 0 (empty), not 1.0f (full)
+    val progressTarget = if (totalHabitsCount == 0) 0.0f else completedHabitsCount.toFloat() / totalHabitsCount
     val animatedProgress by animateFloatAsState(
         targetValue = progressTarget,
         animationSpec = tween(durationMillis = 800),

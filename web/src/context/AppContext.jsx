@@ -19,7 +19,7 @@ export function AppProvider({ children }) {
   const [streak, setStreak] = useState(0);
   const [selectedPet, setSelectedPet] = useState(0); // 0 = Cat, 1 = Dog, 2 = Panda
   const [petName, setPetName] = useState("Buddy");
-  const [petHappiness, setPetHappiness] = useState(80);
+  const [petHappiness, setPetHappiness] = useState(0);
   const [waterIntake, setWaterIntake] = useState(0);
   const [waterGoal, setWaterGoal] = useState(8);
   const [dailySteps, setDailySteps] = useState(0);
@@ -110,7 +110,8 @@ export function AppProvider({ children }) {
       }
 
       // Happiness decays slightly on new day (-15)
-      const updatedHappiness = Math.max(20, (data.petHappiness || 80) - 15);
+      const currentHappiness = data.petHappiness !== undefined ? data.petHappiness : 0;
+      const updatedHappiness = Math.max(0, currentHappiness - 15);
 
       // Reset habit completion status for the new day
       const resetHabits = habits.map((h) => ({ ...h, completed: false }));
@@ -165,7 +166,7 @@ export function AppProvider({ children }) {
               streak: data.streak || 0,
               selectedPet: data.selectedPet || 0,
               petName: data.petName || "Buddy",
-              petHappiness: data.petHappiness || 80,
+              petHappiness: data.petHappiness !== undefined ? data.petHappiness : 0,
               waterIntake: data.waterIntake || 0,
               waterGoal: data.waterGoal || 8,
               dailySteps: data.dailySteps || 0,
@@ -214,7 +215,7 @@ export function AppProvider({ children }) {
               streak: 0,
               selectedPet: 0,
               petName: "Buddy",
-              petHappiness: 80,
+              petHappiness: 0,
               waterIntake: 0,
               waterGoal: 8,
               dailySteps: 0,
@@ -274,7 +275,7 @@ export function AppProvider({ children }) {
     setStreak(0);
     setSelectedPet(0);
     setPetName("Buddy");
-    setPetHappiness(80);
+    setPetHappiness(0);
     setWaterIntake(0);
     setWaterGoal(8);
     setDailySteps(0);

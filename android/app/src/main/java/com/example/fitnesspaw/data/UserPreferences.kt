@@ -299,7 +299,7 @@ class UserPreferences(
     }
 
     val petHappinessFlow = context.dataStore.data.map {
-        it[PET_HAPPINESS] ?: 80
+        it[PET_HAPPINESS] ?: 0
     }
 
     suspend fun saveWeight(weight: String) {

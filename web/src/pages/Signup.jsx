@@ -50,7 +50,7 @@ export default function Signup() {
         streak: 0,
         selectedPet: selectedPetIndex,
         petName: selectedPetIndex === 0 ? "Milo" : "Buddy",
-        petHappiness: 80,
+        petHappiness: 0,
         waterIntake: 0,
         waterGoal: 8,
         dailySteps: 0,

@@ -2,19 +2,15 @@ package com.example.fitnesspaw.ui.screens
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,8 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -50,29 +44,11 @@ fun PetsScreen(viewModel: MainViewModel) {
     var newName by remember { mutableStateOf("") }
     var showFeedHearts by remember { mutableStateOf(false) }
 
-    // Resolve pet image assets based on index and happiness
+    // Always show idle (happy) image on the Pets screen
     val petImageRes = when (selectedPet) {
-        0 -> { // Cat
-            when {
-                petHappiness < 40 -> R.drawable.cat_sad
-                petHappiness < 80 -> R.drawable.cat_sleepy
-                else -> R.drawable.cat_happy
-            }
-        }
-        1 -> { // Dog
-            when {
-                petHappiness < 40 -> R.drawable.dog_sad
-                petHappiness < 80 -> R.drawable.dog_sleepy
-                else -> R.drawable.dog_happy
-            }
-        }
-        else -> { // Panda
-            when {
-                petHappiness < 40 -> R.drawable.panda_sad
-                petHappiness < 80 -> R.drawable.panda_sleepy
-                else -> R.drawable.panda_happy
-            }
-        }
+        0    -> R.drawable.cat_happy   // Cat idle
+        1    -> R.drawable.dog_happy   // Dog idle
+        else -> R.drawable.panda_happy // Panda idle
     }
 
     val petTypeText = when (selectedPet) {
@@ -86,12 +62,6 @@ fun PetsScreen(viewModel: MainViewModel) {
         petHappiness < 80 -> "Sleepy 😴"
         else -> "Happy! ✨"
     }
-
-    val happinessProgress by animateFloatAsState(
-        targetValue = petHappiness / 100f,
-        animationSpec = androidx.compose.animation.core.tween(800),
-        label = "HappinessProgressRing"
-    )
 
     // Trigger hearts animation when fed
     LaunchedEffect(showFeedHearts) {
@@ -186,32 +156,14 @@ fun PetsScreen(viewModel: MainViewModel) {
                     ) {
                         Box(
                             contentAlignment = Alignment.Center,
-                            modifier = Modifier.size(220.dp)
+                            modifier = Modifier.size(200.dp)
                         ) {
-                            // Circular Canvas Ring
-                            val accentColor = MaterialTheme.colorScheme.primary
-                            val trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
-                            Canvas(modifier = Modifier.fillMaxSize()) {
-                                drawCircle(
-                                    color = trackColor,
-                                    radius = size.minDimension / 2 - 12.dp.toPx(),
-                                    style = Stroke(width = 10.dp.toPx())
-                                )
-                                drawArc(
-                                    color = accentColor,
-                                    startAngle = -90f,
-                                    sweepAngle = happinessProgress * 360f,
-                                    useCenter = false,
-                                    style = Stroke(width = 10.dp.toPx(), cap = StrokeCap.Round)
-                                )
-                            }
-
-                            // Pet Image Frame
+                            // Pet Image Frame (no ring)
                             Image(
                                 painter = painterResource(id = petImageRes),
                                 contentDescription = "Virtual Pet Companion",
                                 modifier = Modifier
-                                    .size(150.dp)
+                                    .size(180.dp)
                                     .clip(CircleShape),
                                 contentScale = ContentScale.Fit
                             )
@@ -232,7 +184,7 @@ fun PetsScreen(viewModel: MainViewModel) {
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        // Pet Name & Type Badge
+                        // Pet Name & Type + Mood Badge
                         Text(
                             text = petName,
                             color = MaterialTheme.colorScheme.onBackground,
@@ -255,39 +207,6 @@ fun PetsScreen(viewModel: MainViewModel) {
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
                         }
-
-                        Spacer(modifier = Modifier.height(20.dp))
-
-                        // Happiness Percentage Stats
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Happiness Level:",
-                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-                                fontSize = 14.sp
-                            )
-                            Text(
-                                text = "$petHappiness / 100 ($petMoodText)",
-                                color = MaterialTheme.colorScheme.onBackground,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        LinearProgressIndicator(
-                            progress = { happinessProgress },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp)
-                                .clip(RoundedCornerShape(4.dp)),
-                            color = MaterialTheme.colorScheme.primary,
-                            trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
-                        )
                     }
                 }
             }

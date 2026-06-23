@@ -83,7 +83,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val petHappiness: StateFlow<Int> = userPreferences.petHappinessFlow.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 80
+        initialValue = 0
     )
 
     val weight: StateFlow<String> = userPreferences.weightFlow.stateIn(
@@ -173,7 +173,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 userPreferences.saveStepSensorBaseline(-1)
 
                 // Happiness Decays slightly on new day (-15)
-                val newHappiness = maxOf(20, petHappiness.value - 15)
+                val newHappiness = maxOf(0, petHappiness.value - 15)
                 userPreferences.savePetHappiness(newHappiness)
 
                 // Reset custom habits completion status for the new day
@@ -535,7 +535,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val fbWaterGoal = (data["waterGoal"] as? Long)?.toInt() ?: 8
                 val fbHabitsJson = data["habitsJson"] as? String ?: ""
                 val fbPetName = data["petName"] as? String ?: "Buddy"
-                val fbPetHappiness = (data["petHappiness"] as? Long)?.toInt() ?: 80
+                val fbPetHappiness = (data["petHappiness"] as? Long)?.toInt() ?: 0
                 val fbWeight = data["weight"] as? String ?: ""
                 val fbHeight = data["height"] as? String ?: ""
                 val fbCalorieGoal = (data["calorieGoal"] as? Long)?.toInt() ?: 500
@@ -572,7 +572,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             userPreferences.saveStepSensorBaseline(-1)
             userPreferences.saveHabitsJson("")
             userPreferences.savePetName("Buddy")
-            userPreferences.savePetHappiness(80)
+            userPreferences.savePetHappiness(0)
             userPreferences.saveThemeMode(2) // Reset to System theme
             userPreferences.saveWeight("")
             userPreferences.saveHeight("")

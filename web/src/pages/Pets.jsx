@@ -1,16 +1,10 @@
 import { useState, useEffect } from "react";
 import { useApp } from "../context/AppContext";
 
-// Import Pet Assets
+// Import Pet Assets (idle only)
 import catHappy from "../assets/cat_happy.png";
-import catSad from "../assets/cat_sad.png";
-import catSleepy from "../assets/cat_sleepy.png";
 import dogHappy from "../assets/dog_happy.png";
-import dogSad from "../assets/dog_sad.png";
-import dogSleepy from "../assets/dog_sleepy.png";
 import pandaHappy from "../assets/panda_happy.png";
-import pandaSad from "../assets/panda_sad.png";
-import pandaSleepy from "../assets/panda_sleepy.png";
 
 export default function Pets() {
   const {
@@ -36,50 +30,11 @@ export default function Pets() {
   }, [message]);
 
   // Determine pet image assets and details
+  // Always show idle (happy) image on the Pets screen
   const getPetDetails = () => {
-    let image = catHappy;
-    let type = "Cat";
-    let mood = "Happy! ✨";
-
-    if (selectedPet === 0) {
-      type = "Cat";
-      if (petHappiness < 40) {
-        image = catSad;
-        mood = "Sad 😢";
-      } else if (petHappiness < 80) {
-        image = catSleepy;
-        mood = "Sleepy 😴";
-      } else {
-        image = catHappy;
-        mood = "Happy! ✨";
-      }
-    } else if (selectedPet === 1) {
-      type = "Dog";
-      if (petHappiness < 40) {
-        image = dogSad;
-        mood = "Sad 😢";
-      } else if (petHappiness < 80) {
-        image = dogSleepy;
-        mood = "Sleepy 😴";
-      } else {
-        image = dogHappy;
-        mood = "Happy! ✨";
-      }
-    } else {
-      type = "Panda";
-      if (petHappiness < 40) {
-        image = pandaSad;
-        mood = "Sad 😢";
-      } else if (petHappiness < 80) {
-        image = pandaSleepy;
-        mood = "Sleepy 😴";
-      } else {
-        image = pandaHappy;
-        mood = "Happy! ✨";
-      }
-    }
-
-    return { image, type, mood };
+    if (selectedPet === 0) return { image: catHappy,   type: "Cat",   mood: "Happy! ✨" };
+    if (selectedPet === 1) return { image: dogHappy,   type: "Dog",   mood: "Happy! ✨" };
+    return                        { image: pandaHappy, type: "Panda", mood: "Happy! ✨" };
   };
 
   const { image: petImage, type: petType, mood: petMood } = getPetDetails();
@@ -130,24 +85,8 @@ export default function Pets() {
         {/* Main Pet Display Card */}
         <div className="pet-display-section">
           <div className="pet-card glass-card">
-            <div className="happiness-ring-container">
-              {/* Circular happiness indicator */}
-              <svg className="happiness-ring-svg" viewBox="0 0 220 220">
-                <circle cx="110" cy="110" r="96" className="happiness-ring-track" />
-                <circle
-                  cx="110"
-                  cy="110"
-                  r="96"
-                  className="happiness-ring-fill anim-glow"
-                  strokeDasharray={2 * Math.PI * 96}
-                  strokeDashoffset={2 * Math.PI * 96 * (1 - petHappiness / 100)}
-                />
-              </svg>
-
-              <div className="pet-image-container">
-                <img src={petImage} alt="Virtual Pet Companion" className="pet-portrait anim-float" />
-              </div>
-
+            <div className="pet-image-container">
+              <img src={petImage} alt="Virtual Pet Companion" className="pet-portrait anim-float" />
               {/* Heart floating feeding animation */}
               {showHearts && (
                 <div className="hearts-overlay anim-heart">
@@ -159,19 +98,6 @@ export default function Pets() {
             <div className="pet-identity">
               <h2 className="pet-name-label">{petName}</h2>
               <div className="pet-type-badge">{petType}</div>
-            </div>
-
-            <div className="happiness-status">
-              <div className="happiness-header">
-                <span>Happiness Level:</span>
-                <span className="happiness-val">{petHappiness} / 100 ({petMood})</span>
-              </div>
-              <div className="happiness-bar-track">
-                <div
-                  className="happiness-bar-fill"
-                  style={{ width: `${petHappiness}%` }}
-                ></div>
-              </div>
             </div>
           </div>
         </div>
@@ -330,55 +256,29 @@ export default function Pets() {
           text-align: center;
         }
 
-        .happiness-ring-container {
-          position: relative;
-          width: 220px;
-          height: 220px;
-          margin-bottom: 28px;
-        }
-
-        .happiness-ring-svg {
-          width: 100%;
-          height: 100%;
-          transform: rotate(-90deg);
-        }
-
-        .happiness-ring-track {
-          fill: none;
-          stroke: hsl(var(--text-secondary) / 0.08);
-          stroke-width: 9px;
-        }
-
-        .happiness-ring-fill {
-          fill: none;
-          stroke: hsl(var(--primary));
-          stroke-width: 9px;
-          stroke-linecap: round;
-          transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
         .pet-image-container {
-          position: absolute;
-          top: 15px;
-          left: 15px;
-          right: 15px;
-          bottom: 15px;
+          position: relative;
+          width: 200px;
+          height: 200px;
           border-radius: 50%;
           overflow: hidden;
           display: flex;
           align-items: center;
           justify-content: center;
+          background-color: hsl(var(--primary) / 0.06);
+          border: 2px solid hsl(var(--primary) / 0.15);
+          margin-bottom: 28px;
         }
 
         .pet-portrait {
-          width: 82%;
-          height: 82%;
+          width: 85%;
+          height: 85%;
           object-fit: contain;
         }
 
         .hearts-overlay {
           position: absolute;
-          top: 35%;
+          top: 30%;
           font-size: 2.2rem;
           font-weight: bold;
           z-index: 10;
@@ -411,41 +311,7 @@ export default function Pets() {
           border-radius: 8px;
         }
 
-        .happiness-status {
-          width: 100%;
-          max-width: 380px;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
 
-        .happiness-header {
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.9rem;
-          font-weight: 600;
-          color: hsl(var(--text-secondary));
-        }
-
-        .happiness-val {
-          color: hsl(var(--text-primary));
-          font-weight: 700;
-        }
-
-        .happiness-bar-track {
-          width: 100%;
-          height: 10px;
-          border-radius: 5px;
-          background-color: hsl(var(--text-secondary) / 0.08);
-          overflow: hidden;
-        }
-
-        .happiness-bar-fill {
-          height: 100%;
-          background-color: hsl(var(--primary));
-          border-radius: 5px;
-          transition: width 0.5s ease;
-        }
 
         /* Controls Column */
         .pet-controls-section {

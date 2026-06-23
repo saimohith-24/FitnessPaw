@@ -116,26 +116,6 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Firebase Connection Details card */}
-          <div className="profile-card glass-card">
-            <h3 className="card-title">Firebase Console Link</h3>
-            <div className="profile-stats-list">
-              <div className="stats-row">
-                <span>Status:</span>
-                <span className="stats-value text-success">Connected ✅</span>
-              </div>
-              <div className="stats-row">
-                <span>User UID:</span>
-                <span className="stats-value doc-uid" title={userUid}>{userUid}</span>
-              </div>
-              <div className="stats-row">
-                <span>Email Status:</span>
-                <span className="stats-value">
-                  {isVerified ? "Verified Email" : "Pending Verification"}
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Right Column: Goal Settings and App Styling */}
@@ -406,17 +386,6 @@ export default function Profile() {
         .stats-value {
           color: hsl(var(--text-primary));
           font-weight: 700;
-        }
-
-        .stats-value.text-success {
-          color: hsl(var(--success));
-        }
-
-        .doc-uid {
-          max-width: 180px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
         }
 
         /* Goal Counters */

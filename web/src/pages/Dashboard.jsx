@@ -53,7 +53,8 @@ export default function Dashboard() {
   // Determine pet image based on index and habit completion progress
   const completedCount = customHabits.filter((h) => h.completed).length;
   const totalCount = customHabits.length;
-  const progressRatio = totalCount === 0 ? 1 : completedCount / totalCount;
+  // For new users with no habits, ring should be 0 (empty), not 1 (full)
+  const progressRatio = totalCount === 0 ? 0 : completedCount / totalCount;
 
   const getPetImageAndStatus = () => {
     let type = "Cat";
