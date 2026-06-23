@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>API Test Report - FitnessPaw</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0b0f19;
+      color: #cbd5e1;
+      margin: 0;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 2px solid #1e293b;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      color: #f8fafc;
+      margin: 0 0 10px 0;
+      font-size: 32px;
+    }
+    .subtitle {
+      color: #94a3b8;
+      font-size: 16px;
+      margin: 0;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    .card-value {
+      font-size: 36px;
+      font-weight: bold;
+      color: #f8fafc;
+      margin-bottom: 5px;
+    }
+    .card-label {
+      color: #94a3b8;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .card.pass .card-value { color: #10b981; }
+    .card.fail .card-value { color: #ef4444; }
+    
+    .test-list {
+      background-color: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .test-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #1e293b;
+    }
+    .test-item:last-child {
+      border-bottom: none;
+    }
+    .test-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .test-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 4px;
+    }
+    .test-meta {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .badge.passed {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge.failed {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .error-block {
+      background-color: rgba(239, 68, 68, 0.05);
+      border-left: 4px solid #ef4444;
+      padding: 10px 15px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #fda4af;
+      border-radius: 0 4px 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FitnessPaw - API Verification Report</h1>
+      <p class="subtitle">Completed on 6/23/2026, 9:42:07 AM | Executed inside monorepo testing harness</p>
+    </header>
+
+    <div class="summary-grid">
+      <div class="card">
+        <div class="card-value">8</div>
+        <div class="card-label">Total Tests</div>
+      </div>
+      <div class="card pass">
+        <div class="card-value">8</div>
+        <div class="card-label">Passed</div>
+      </div>
+      <div class="card fail">
+        <div class="card-value">0</div>
+        <div class="card-label">Failed</div>
+      </div>
+      <div class="card">
+        <div class="card-value">100.0%</div>
+        <div class="card-label">Pass Rate</div>
+      </div>
+    </div>
+
+    <h2 style="color: #f8fafc; font-size: 20px; margin-bottom: 15px;">Detailed Test Results</h2>
+    <div class="test-list">
+      
+        <div class="test-item">
+          <div class="test-info">
+            <span class="test-name">Signup Validation API</span>
+            <span class="test-meta">Duration: 0ms</span>
+            
+          </div>
+          <div>
+            <span class="badge passed">PASSED</span>
+          </div>
+        </div>
+      
+        <div class="test-item">
+          <div class="test-info">
+            <span class="test-name">Login Authentication API</span>
+            <span class="test-meta">Duration: 0ms</span>
+            
+          </div>
+          <div>
+            <span class="badge passed">PASSED</span>
+          </div>
+        </div>
+      
+        <div class="test-item">
+          <div class="test-info">
+            <span class="test-name">Forgot Password / Password Reset API</span>
+            <span class="test-meta">Duration: 0ms</span>
+            
+          </div>
+          <div>
+            <span class="badge passed">PASSED</span>
+          </div>
+        </div>
+      
+        <div class="test-item">
+          <div class="test-info">
+            <span class="test-name">Habit CRUD Operations API</span>
+            <span class="test-meta">Duration: 1ms</span>
+            
+          </div>
+          <div>
+            <span class="badge passed">PASSED</span>
+          </div>
+        </div>
+      
+        <div class="test-item">
+          <div class="test-info">
+            <span class="test-name">Water Tracking Operations API</span>
+            <span class="test-meta">Duration: 0ms</span>
+            
+          </div>
+          <div>
+            <span class="badge passed">PASSED</span>
+          </div>
+        </div>
+      
+        <div class="test-item">
+          <div class="test-info">
+            <span class="test-name">Sleep Duration and Log Validation API</span>
+            <span class="test-meta">Duration: 0ms</span>
+            
+          </div>
+          <div>
+            <span class="badge passed">PASSED</span>
+          </div>
+        </div>
+      
+        <div class="test-item">
+          <div class="test-info">
+            <span class="test-name">Step Tracking and Baseline Calibration API</span>
+            <span class="test-meta">Duration: 0ms</span>
+            
+          </div>
+          <div>
+            <span class="badge passed">PASSED</span>
+          </div>
+        </div>
+      
+        <div class="test-item">
+          <div class="test-info">
+            <span class="test-name">Analytics Aggregation and Metric Charts API</span>
+            <span class="test-meta">Duration: 0ms</span>
+            
+          </div>
+          <div>
+            <span class="badge passed">PASSED</span>
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</body>
+</html>

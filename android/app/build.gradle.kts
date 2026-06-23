@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.gms.google-services")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -82,4 +83,16 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.06.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+detekt {
+    toolVersion = "1.23.6"
+    config.setFrom(files("../../testing/codequality/detekt.yml"))
+    buildUponDefaultConfig = true
+    allRules = false
+    ignoreFailures = true
+    reports {
+        html.required.set(true)
+        html.outputLocation.set(file("../build/reports/detekt.html"))
+    }
 }

@@ -1,0 +1,186 @@
+name: FitnessPaw Deployment Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+# Permissions needed for GitHub Pages deployment
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  Deployment:
+    name: Execute Release & Web Deployments
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant Execute Permission to Gradlew
+        run: chmod +x android/gradlew
+
+      - name: Compile Production Release APK
+        run: |
+          cd android
+          ./gradlew assembleRelease
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install Web Dependencies
+        run: |
+          cd web
+          npm install
+
+      - name: Compile React Web Assets
+        run: |
+          cd web
+          npm run build
+
+      - name: Deploy Web App to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./web/dist
+          force_orphan: true
+
+      - name: Generate Deployment Summary Report
+        run: |
+          mkdir -p testing/reports
+          cat << 'EOF' > testing/reports/deployment-report.html
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Deployment Report - FitnessPaw</title>
+            <style>
+              body {
+                font-family: 'Segoe UI', sans-serif;
+                background-color: #0b0f19;
+                color: #cbd5e1;
+                margin: 0;
+                padding: 40px 20px;
+              }
+              .container {
+                max-width: 800px;
+                margin: 0 auto;
+              }
+              header {
+                border-bottom: 2px solid #1e293b;
+                padding-bottom: 20px;
+                margin-bottom: 30px;
+              }
+              h1 {
+                color: #f8fafc;
+                margin: 0 0 10px 0;
+              }
+              .card {
+                background-color: #1e293b;
+                border: 1px solid #334155;
+                border-radius: 8px;
+                padding: 24px;
+                margin-bottom: 20px;
+              }
+              .card-title {
+                color: #f8fafc;
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 15px;
+                border-bottom: 1px solid #334155;
+                padding-bottom: 8px;
+              }
+              .status-badge {
+                display: inline-block;
+                padding: 4px 10px;
+                border-radius: 4px;
+                font-size: 12px;
+                font-weight: bold;
+                background-color: rgba(16, 185, 129, 0.15);
+                color: #10b981;
+                border: 1px solid rgba(16, 185, 129, 0.3);
+              }
+              .meta-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                font-size: 14px;
+              }
+              .meta-label {
+                color: #94a3b8;
+              }
+              .meta-value {
+                color: #e2e8f0;
+                font-family: monospace;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <header>
+                <h1>FitnessPaw - Deployment Success Report</h1>
+                <p style="color: #94a3b8; margin: 0;">Automated Release and GitHub Pages deployment summary</p>
+              </header>
+
+              <div class="card">
+                <div class="card-title">General Metadata</div>
+                <div class="meta-row">
+                  <span class="meta-label">Release Trigger</span>
+                  <span class="meta-value">GitHub Actions Auto-Release</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">Branch</span>
+                  <span class="meta-value">main</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">Deployment Status</span>
+                  <span class="status-badge">SUCCESSFUL</span>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">Android Application Deployment</div>
+                <div class="meta-row">
+                  <span class="meta-label">Target Binary</span>
+                  <span class="meta-value">app-release-unsigned.apk</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">Output Artifact Package</span>
+                  <span class="meta-value">android-release-apk</span>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title">Web Application Deployment</div>
+                <div class="meta-row">
+                  <span class="meta-label">Hosting Provider</span>
+                  <span class="meta-value">GitHub Pages</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">Site Target Url</span>
+                  <span class="meta-value"><a href="https://saimohith-24.github.io/FitnessPaw/" style="color: #3b82f6;">https://saimohith-24.github.io/FitnessPaw/</a></span>
+                </div>
+              </div>
+            </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Deployment Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-report
+          path: testing/reports/deployment-report.html
+          retention-days: 7

@@ -1,0 +1,77 @@
+# Detekt configuration for FitnessPaw
+build:
+  maxIssues: 20
+  excludeCorrectable: false
+  weights:
+
+config:
+  validation: true
+  warningsAsErrors: false
+
+complexity:
+  active: true
+  ComplexCondition:
+    active: true
+    threshold: 4
+  ComplexInterface:
+    active: true
+    threshold: 4
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+  LargeClass:
+    active: true
+    threshold: 600
+  LongMethod:
+    active: true
+    threshold: 60
+  LongParameterList:
+    active: true
+    functionThreshold: 6
+    constructorThreshold: 6
+    ignoreDefaultParameters: true
+
+coroutines:
+  active: true
+  GlobalCoroutineUsage:
+    active: true
+
+empty-blocks:
+  active: true
+  EmptyCatchBlock:
+    active: true
+  EmptyClassBlock:
+    active: true
+  EmptyFunctionBlock:
+    active: true
+
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: true
+  TooGenericExceptionThrown:
+    active: true
+
+naming:
+  active: true
+  ClassNaming:
+    active: true
+  FunctionNaming:
+    active: true
+  VariableNaming:
+    active: true
+
+performance:
+  active: true
+  SpreadOperator:
+    active: true
+
+style:
+  active: true
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+  UnusedImports:
+    active: true
+  WildcardImport:
+    active: true

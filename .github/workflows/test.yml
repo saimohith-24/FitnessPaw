@@ -1,0 +1,241 @@
+name: FitnessPaw Automated Test Suite
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Unit-Tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant Execute Permission to Gradlew
+        run: chmod +x android/gradlew
+
+      - name: Run Android Unit Tests
+        run: |
+          cd android
+          ./gradlew testDebugUnitTest
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install Web Dependencies
+        run: |
+          cd web
+          npm install
+
+      - name: Run Web Unit Tests (Vitest)
+        run: |
+          cd web
+          npm run test
+
+      - name: Upload Android JUnit Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: android/app/build/reports/tests/testDebugUnitTest/
+          retention-days: 7
+
+      - name: Upload Web Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-test-report
+          path: web/coverage/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  API-Tests:
+    name: Run API Validation Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run API Verification Suite
+        run: node testing/api/api-test.js
+
+      - name: Upload API Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-report
+          path: testing/reports/api-test-report.html
+          retention-days: 7
+
+  Selenium-Tests:
+    name: Run Selenium E2E Web Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Chrome Browser
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Run Selenium E2E Suite
+        run: node testing/selenium/selenium-test.js
+
+      - name: Upload Selenium Web Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-web-report
+          path: testing/reports/selenium-web-report.html
+          retention-days: 7
+
+  Appium-Tests:
+    name: Run Appium Mobile E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Appium Mobile Suite
+        run: node testing/appium/appium-test.js
+
+      - name: Upload Appium Mobile Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: appium-android-report
+          path: testing/reports/appium-android-report.html
+          retention-days: 7
+
+  Load-Tests:
+    name: Run k6 Load Performance Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Run k6 Load Test Simulation (100/500/1000 Users)
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: testing/load/k6-load-test.js
+
+      - name: Upload Load Testing Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: load-test-report
+          path: testing/reports/load-test-report.html
+          retention-days: 7
+
+  Security-Tests:
+    name: Run Security Scan Audits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install Web Dependencies (for vulnerability scans)
+        run: |
+          cd web
+          npm install
+
+      - name: Run Security and Credentials Scanner
+        run: node testing/security/security-scan.js
+
+      - name: Upload Security Audits Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-report
+          path: testing/reports/security-report.html
+          retention-days: 7
+
+  Code-Quality:
+    name: Code Quality Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for SonarQube analysis
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant Execute Permission to Gradlew
+        run: chmod +x android/gradlew
+
+      - name: Run Kotlin Linting (Detekt)
+        run: |
+          cd android
+          ./gradlew detekt
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install Web Dependencies
+        run: |
+          cd web
+          npm install
+
+      - name: Run Web Linting (ESLint)
+        run: |
+          cd web
+          npm run lint
+
+      - name: SonarQube Quality Analysis
+        uses: SonarSource/sonarqube-scan-action@v3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        continue-on-error: true # Do not fail the build if SonarQube credentials are unset during initial runs
+
+      - name: Prepare Quality Report Files
+        run: |
+          mkdir -p testing/reports/quality/
+          cp -f android/app/build/reports/detekt.html testing/reports/quality/detekt-report.html || true
+          
+      - name: Upload Code Quality Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-quality-report
+          path: testing/reports/quality/
+          if-no-files-found: ignore
+          retention-days: 7
