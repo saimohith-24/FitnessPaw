@@ -331,4 +331,69 @@ class UserPreferences(
     val calorieGoalFlow = context.dataStore.data.map {
         it[CALORIE_GOAL] ?: 500
     }
+
+    suspend fun clearAllData() {
+        context.dataStore.edit {
+            it[SELECTED_PET] = 0
+            it[STEP_GOAL] = 7000
+            it[WATER_GOAL] = 8
+            it[COINS] = 0
+            it[STREAK] = 0
+            it[LAST_DATE] = 0
+            it[GOAL_COMPLETED] = 0
+            it[USERNAME] = ""
+            it[WATER_INTAKE] = 0
+            it[DAILY_STEPS] = 0
+            it[STEP_SENSOR_BASELINE] = -1
+            it[LAST_STREAK_INCREMENT_DATE] = 0
+            it[THEME_MODE] = 2
+            it[HABITS_JSON] = ""
+            it[PET_NAME] = "Buddy"
+            it[PET_HAPPINESS] = 0
+            it[WEIGHT] = ""
+            it[HEIGHT] = ""
+            it[CALORIE_GOAL] = 500
+        }
+    }
+
+    suspend fun saveFullProfile(
+        username: String,
+        coins: Int,
+        streak: Int,
+        selectedPet: Int,
+        waterIntake: Int,
+        dailySteps: Int,
+        stepGoal: Int,
+        waterGoal: Int,
+        habitsJson: String,
+        petName: String,
+        petHappiness: Int,
+        weight: String,
+        height: String,
+        calorieGoal: Int
+    ) {
+        context.dataStore.edit {
+            it[USERNAME] = username
+            it[COINS] = coins
+            it[STREAK] = streak
+            it[SELECTED_PET] = selectedPet
+            it[WATER_INTAKE] = waterIntake
+            it[DAILY_STEPS] = dailySteps
+            it[STEP_GOAL] = stepGoal
+            it[WATER_GOAL] = waterGoal
+            it[HABITS_JSON] = habitsJson
+            it[PET_NAME] = petName
+            it[PET_HAPPINESS] = petHappiness
+            it[WEIGHT] = weight
+            it[HEIGHT] = height
+            it[CALORIE_GOAL] = calorieGoal
+        }
+    }
+
+    suspend fun saveProfileData(name: String, pet: Int) {
+        context.dataStore.edit {
+            it[USERNAME] = name
+            it[SELECTED_PET] = pet
+        }
+    }
 }

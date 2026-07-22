@@ -130,6 +130,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _isSensorSupported = MutableStateFlow(true)
     val isSensorSupported: StateFlow<Boolean> = _isSensorSupported.asStateFlow()
 
+    private var isProfileLoaded = false
+
     init {
         checkDailyReset()
     }
@@ -430,8 +432,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun saveProfile(name: String, pet: Int) {
         viewModelScope.launch {
-            userPreferences.saveUsername(name)
-            userPreferences.saveSelectedPet(pet)
+            userPreferences.saveProfileData(name, pet)
+            syncToFirestore()
+        }
+    }
+
+    fun initializeNewUser(name: String, pet: Int) {
+        viewModelScope.launch {
+            userPreferences.clearAllData()
+            userPreferences.saveProfileData(name, pet)
+            isProfileLoaded = true
             syncToFirestore()
         }
     }
@@ -499,24 +509,38 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     // FIRESTORE SYNCHRONIZATION
     // ===================================
     fun syncToFirestore() {
-        if (FirebaseAuth.getInstance().currentUser == null) return
+        if (FirebaseAuth.getInstance().currentUser == null || !isProfileLoaded) return
         viewModelScope.launch {
             val habitsJson = userPreferences.habitsJsonFlow.first()
+            val currentUsername = userPreferences.usernameFlow.first()
+            val currentCoins = userPreferences.coinsFlow.first()
+            val currentStreak = userPreferences.streakFlow.first()
+            val currentSelectedPet = userPreferences.selectedPetFlow.first()
+            val currentWaterIntake = userPreferences.waterIntakeFlow.first()
+            val currentDailySteps = userPreferences.dailyStepsFlow.first()
+            val currentStepGoal = userPreferences.stepGoalFlow.first()
+            val currentWaterGoal = userPreferences.waterGoalFlow.first()
+            val currentPetName = userPreferences.petNameFlow.first()
+            val currentPetHappiness = userPreferences.petHappinessFlow.first()
+            val currentWeight = userPreferences.weightFlow.first()
+            val currentHeight = userPreferences.heightFlow.first()
+            val currentCalorieGoal = userPreferences.calorieGoalFlow.first()
+
             firestoreManager.saveUserData(
-                username = username.value,
-                coins = coins.value,
-                streak = streak.value,
-                selectedPet = selectedPet.value,
-                waterIntake = waterIntake.value,
-                dailySteps = dailySteps.value,
-                stepGoal = stepGoal.value,
-                waterGoal = waterGoal.value,
+                username = currentUsername,
+                coins = currentCoins,
+                streak = currentStreak,
+                selectedPet = currentSelectedPet,
+                waterIntake = currentWaterIntake,
+                dailySteps = currentDailySteps,
+                stepGoal = currentStepGoal,
+                waterGoal = currentWaterGoal,
                 habitsJson = habitsJson,
-                petName = petName.value,
-                petHappiness = petHappiness.value,
-                weight = weight.value,
-                height = height.value,
-                calorieGoal = calorieGoal.value
+                petName = currentPetName,
+                petHappiness = currentPetHappiness,
+                weight = currentWeight,
+                height = currentHeight,
+                calorieGoal = currentCalorieGoal
             )
         }
     }
@@ -540,43 +564,32 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val fbHeight = data["height"] as? String ?: ""
                 val fbCalorieGoal = (data["calorieGoal"] as? Long)?.toInt() ?: 500
 
-                userPreferences.saveUsername(fbUsername)
-                userPreferences.saveCoins(fbCoins)
-                userPreferences.saveStreak(fbStreak)
-                userPreferences.saveSelectedPet(fbSelectedPet)
-                userPreferences.saveWaterIntake(fbWaterIntake)
-                userPreferences.saveDailySteps(fbDailySteps)
-                userPreferences.saveStepGoal(fbStepGoal)
-                userPreferences.saveWaterGoal(fbWaterGoal)
-                userPreferences.saveHabitsJson(fbHabitsJson)
-                userPreferences.savePetName(fbPetName)
-                userPreferences.savePetHappiness(fbPetHappiness)
-                userPreferences.saveWeight(fbWeight)
-                userPreferences.saveHeight(fbHeight)
-                userPreferences.saveCalorieGoal(fbCalorieGoal)
+                userPreferences.saveFullProfile(
+                    username = fbUsername,
+                    coins = fbCoins,
+                    streak = fbStreak,
+                    selectedPet = fbSelectedPet,
+                    waterIntake = fbWaterIntake,
+                    dailySteps = fbDailySteps,
+                    stepGoal = fbStepGoal,
+                    waterGoal = fbWaterGoal,
+                    habitsJson = fbHabitsJson,
+                    petName = fbPetName,
+                    petHappiness = fbPetHappiness,
+                    weight = fbWeight,
+                    height = fbHeight,
+                    calorieGoal = fbCalorieGoal
+                )
             }
+            isProfileLoaded = true
             onComplete()
         }
     }
 
     fun clearLocalData() {
+        isProfileLoaded = false
         viewModelScope.launch {
-            userPreferences.saveUsername("")
-            userPreferences.saveCoins(0)
-            userPreferences.saveStreak(0)
-            userPreferences.saveSelectedPet(0)
-            userPreferences.saveWaterIntake(0)
-            userPreferences.saveDailySteps(0)
-            userPreferences.saveStepGoal(7000)
-            userPreferences.saveWaterGoal(8)
-            userPreferences.saveStepSensorBaseline(-1)
-            userPreferences.saveHabitsJson("")
-            userPreferences.savePetName("Buddy")
-            userPreferences.savePetHappiness(0)
-            userPreferences.saveThemeMode(2) // Reset to System theme
-            userPreferences.saveWeight("")
-            userPreferences.saveHeight("")
-            userPreferences.saveCalorieGoal(500)
+            userPreferences.clearAllData()
         }
     }
 }

@@ -94,9 +94,8 @@ class MainActivity : ComponentActivity() {
                     composable("signup") {
                         SignupScreen(
                             onSignupSuccess = { username, petIndex ->
-                                // Clear any stale DataStore data before initializing new user
-                                mainViewModel.clearLocalData()
-                                mainViewModel.saveProfile(username, petIndex)
+                                // Clear stale data and initialize new user profile transactionally
+                                mainViewModel.initializeNewUser(username, petIndex)
                                 NotificationScheduler(this@MainActivity).scheduleReminders()
                                 rootNavController.navigate("main") {
                                     popUpTo("login") { inclusive = true }

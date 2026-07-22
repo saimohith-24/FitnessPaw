@@ -52,6 +52,12 @@ class FirestoreManager {
             .collection("users")
             .document(userId)
             .set(data)
+            .addOnSuccessListener {
+                android.util.Log.d("FirestoreManager", "Successfully synced user data for $userId")
+            }
+            .addOnFailureListener { e ->
+                android.util.Log.e("FirestoreManager", "Failed to sync user data for $userId", e)
+            }
     }
 
     // =========================
